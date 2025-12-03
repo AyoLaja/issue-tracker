@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Theme className='flex'>
           <NavBar />
-          <main className='p-5'>{children}</main>
+          <main className='p-6 w-[calc(100vw-80px)]'>{children}</main>
         </Theme>
       </body>
     </html>
