@@ -1,5 +1,12 @@
 'use client';
-import { Box, Button, Callout, TextArea, TextField } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  Callout,
+  Text,
+  TextArea,
+  TextField,
+} from '@radix-ui/themes';
 import { useForm, Controller } from 'react-hook-form';
 import { FiInfo } from 'react-icons/fi';
 import SimpleMDE from 'react-simplemde-editor';
@@ -12,6 +19,8 @@ import {
   createIssueSchema,
   CreateIssueSchema,
 } from '../../schemas/createIssueSchema';
+
+import Error from '../../Error';
 
 export default function NewIssue() {
   const router = useRouter();
@@ -64,11 +73,7 @@ export default function NewIssue() {
             size='2'
             placeholder='Issue Title'
           />
-          {errors.title && (
-            <span className='text-red-500 pt-4 text-xs'>
-              {errors.title?.message}
-            </span>
-          )}
+          {errors.title && <Error>{errors.title?.message}</Error>}
         </Box>
         <Box maxWidth='500px'>
           <Controller
@@ -84,11 +89,7 @@ export default function NewIssue() {
               />
             )}
           />
-          {errors.description && (
-            <span className='text-red-500 pt-4 text-xs'>
-              {errors.description?.message}
-            </span>
-          )}
+          {errors.description && <Error>{errors.description?.message}</Error>}
         </Box>
         <Box>
           <Button
