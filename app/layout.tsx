@@ -38,9 +38,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased flex`}
       >
-        <Theme className='flex' accentColor='lime' grayColor='sage'>
+        <Theme className='flex' appearance='dark'>
           <NavBar />
-          <main className='p-6 w-[calc(100vw-80px)]'>{children}</main>
+          <main className='p-6 w-[calc(100vw-80px)] ml-20'>{children}</main>
           {/* <ThemePanel /> */}
         </Theme>
       </body>

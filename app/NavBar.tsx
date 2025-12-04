@@ -11,7 +11,7 @@ export default function NavBar() {
   ];
 
   return (
-    <nav className='h-dvh w-20 flex flex-col gap-6 items-center justify-center bg-amber-700 py-4 px-2'>
+    <nav className='h-dvh w-20 flex flex-col gap-6 items-center justify-center bg-amber-700 py-4 px-2 fixed'>
       {links.map((link) => (
         <Link key={link.href} href={link.href}>
           {link.label}

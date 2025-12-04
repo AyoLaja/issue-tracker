@@ -6,26 +6,27 @@ import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-interface NewIssueForm {
-  title: string;
-  description: string;
-}
+import {
+  createIssueSchema,
+  CreateIssueSchema,
+} from '../../schemas/createIssueSchema';
 
 export default function NewIssue() {
   const router = useRouter();
   const {
     register,
     handleSubmit,
-    setValue,
     control,
     setError,
-    formState: { errors },
-  } = useForm<NewIssueForm>({
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<CreateIssueSchema>({
     mode: 'onChange',
+    resolver: zodResolver(createIssueSchema),
   });
 
-  const onSubmit = async (data: NewIssueForm) => {
+  const onSubmit = async (data: CreateIssueSchema) => {
     try {
       await axios.post('/api/issues', data);
       router.push('/issues');
@@ -40,7 +41,7 @@ export default function NewIssue() {
 
   return (
     <div className='flex flex-col gap-4'>
-      {errors.title && (
+      {/* {errors.title && (
         <Callout.Root color='red'>
           <Callout.Icon>
             <FiInfo />
@@ -55,7 +56,7 @@ export default function NewIssue() {
           </Callout.Icon>
           <Callout.Text>{errors.description?.message}</Callout.Text>
         </Callout.Root>
-      )}
+      )} */}
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
         <Box maxWidth='500px'>
           <TextField.Root
@@ -63,9 +64,13 @@ export default function NewIssue() {
             size='2'
             placeholder='Issue Title'
           />
+          {errors.title && (
+            <span className='text-red-500 pt-4 text-xs'>
+              {errors.title?.message}
+            </span>
+          )}
         </Box>
         <Box maxWidth='500px'>
-          {/* <TextArea size='2' placeholder='Issue Description' /> */}
           <Controller
             control={control}
             name='description'
@@ -73,14 +78,25 @@ export default function NewIssue() {
               <SimpleMDE
                 onChange={field.onChange}
                 placeholder='Issue Description'
-                style={{ fontSize: '12px' }}
+                style={{
+                  fontSize: '14px',
+                }}
               />
             )}
           />
-          {/* <SimpleMDE onChange={(value) => setValue('description', value)} /> */}
+          {errors.description && (
+            <span className='text-red-500 pt-4 text-xs'>
+              {errors.description?.message}
+            </span>
+          )}
         </Box>
         <Box>
-          <Button variant='classic' radius='large' color='orange'>
+          <Button
+            variant='classic'
+            radius='large'
+            color='orange'
+            disabled={isSubmitting || !isValid}
+          >
             Create Issue
           </Button>
         </Box>
